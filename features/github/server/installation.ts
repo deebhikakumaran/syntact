@@ -75,7 +75,7 @@ export async function saveInstallation(userId: string, installationId: number) {
 
 
 export async function deleteInstallation(userId: string) {
-    await db.githubInstallation.delete({ where: { userId } });
+    await db.githubInstallation.deleteMany({ where: { userId } });
 }
 
 

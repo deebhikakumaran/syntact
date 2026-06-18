@@ -89,7 +89,7 @@ export function UserMenu({
 
     return (
         <DropdownMenu>
-            <DropdownMenuTrigger
+            <DropdownMenuTrigger 
                 className={cn(className)}
                 render={
                     variant === "compact" ? (
@@ -118,7 +118,7 @@ export function UserMenu({
                     </>
                 ) : null}
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-56">
+            <DropdownMenuContent align="end" className="w-56 rounded-sm">
                 <DropdownMenuGroup>
                     <DropdownMenuLabel className="p-0 font-normal">
                         <div className="flex items-start gap-2 px-2 py-2">

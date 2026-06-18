@@ -22,3 +22,4 @@ todo:
 - draw the auth flow in a diagram
 - getInitials function
 - change usermenu design and content
+- explore betterauth later for improvements

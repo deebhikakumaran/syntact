@@ -18,7 +18,13 @@ export function getGithubApp() {
 }
 
 export function getGithubInstallUrl(userId: string) {
-    const url = new URL(`https://github.com/apps/syntact/installations/new`);
+    const publicLink = process.env.NEXT_PUBLIC_GITHUB_APP_PUBLIC_LINK;
+
+    if (!publicLink) {
+        throw new Error("Missing NEXT_PUBLIC_GITHUB_APP_PUBLIC_LINK in environment variables.");
+    }
+
+    const url = new URL(publicLink);
     // `state` round-trips through GitHub so we can link the installation to this user.
     url.searchParams.set("state", userId);
     return url.toString();
