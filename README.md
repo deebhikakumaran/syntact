@@ -10,6 +10,8 @@ steps done:
 - github session management done
 - handled edgecases, security, standardized structures in auth flow
 - login flow functionality tested
+- github app installation and connection disconnection part done
+- pr event webhook received
 
 
 todo:
@@ -23,3 +25,5 @@ todo:
 - getInitials function
 - change usermenu design and content
 - explore betterauth later for improvements
+- theme toggler homepage bug
+- handle disconnetion part gracefully

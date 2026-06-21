@@ -1,9 +1,9 @@
-import { App } from "octokit";
+import "server-only";
+import { App } from "@octokit/app";
 
 let githubApp: App | null = null;
 
-
-export function getGithubApp() {
+export function getGithubApp(): App {
     if (!githubApp) {
         githubApp = new App({
             appId: process.env.GITHUB_APP_ID!,
@@ -15,17 +15,4 @@ export function getGithubApp() {
     }
 
     return githubApp;
-}
-
-export function getGithubInstallUrl(userId: string) {
-    const publicLink = process.env.NEXT_PUBLIC_GITHUB_APP_PUBLIC_LINK;
-
-    if (!publicLink) {
-        throw new Error("Missing NEXT_PUBLIC_GITHUB_APP_PUBLIC_LINK in environment variables.");
-    }
-
-    const url = new URL(publicLink);
-    // `state` round-trips through GitHub so we can link the installation to this user.
-    url.searchParams.set("state", userId);
-    return url.toString();
 }
