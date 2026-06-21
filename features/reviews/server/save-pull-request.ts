@@ -1,4 +1,4 @@
-import { PullRequestWebhookPayload } from "@/features/github/server/webhook-handler";
+import { PullRequestWebhookPayload } from "@/features/reviews/types/review";
 import { db } from "@/lib/db";
 
 function getAuthorLogin(user: { login: string } | null): string | null {
@@ -32,5 +32,7 @@ export async function savePullRequest(payload: PullRequestWebhookPayload) {
 
             status: "pending",
         }
-    })
+    });
+
+    return pullRequest;
 }

@@ -1,20 +1,9 @@
 import { getGithubApp } from "@/features/github/utils/github-app";
 import { savePullRequest } from "@/features/reviews/server/save-pull-request";
+import { inngest } from "@/features/inngest/client";
+import { PullRequestWebhookPayload } from "@/features/reviews/types/review";
 
 const REVIEWABLE_ACTIONS = ["opened", "synchronize", "reopened"];
-
-export type PullRequestWebhookPayload = {
-    action: string;
-    installation: { id: number };
-    repository: { full_name: string };
-    pull_request: {
-        number: number;
-        title: string;
-        user: { login: string } | null;
-        head: { sha: string };
-        base: { ref: string };
-    };
-};
 
 async function isSignatureValid(payload: string, signature: string | null) {
     if (!signature) {
@@ -49,6 +38,11 @@ export async function handleGithubWebhook(request: Request) {
     const pullRequest = await savePullRequest(event)
 
     //   todo: Map GitHub's installation id 
+
+    await inngest.send({
+        name: "github/pr.received",
+        data: { pullRequestId: pullRequest.id },
+    });
 
     //  todo: TriggerReviewJob
 
