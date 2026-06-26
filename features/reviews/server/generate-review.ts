@@ -2,6 +2,7 @@ import { generateText } from "ai";
 import { openrouter } from "@/features/ai"
 import { ReviewInput } from "@/features/reviews/types/review";
 
+
 const REVIEW_MODEL = "openrouter/free"
 
 
@@ -64,13 +65,16 @@ function buildRepoContextSection(repoContextSnippets: string[]) {
 
 
 export async function generateReview(input: ReviewInput) {
+    const context = input.contextSnippets.join("\n\n---\n\n");
+    const repoContextSection = buildRepoContextSection(input.repoContextSnippets);
+
     const { text } = await generateText({
         model: openrouter(REVIEW_MODEL),
         system: SYSTEM_PROMPT,
         prompt: `Repository: ${input.repoFullName}
-                Pull request title: ${input.title}
-                ## Changed files (unified diff)
-                ${input.diff}${buildRepoContextSection([])}`,
+                 Pull request title: ${input.title}
+                 Code changes:
+                 ${context}${repoContextSection}`,
     });
 
     return text;

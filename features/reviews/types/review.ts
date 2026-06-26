@@ -7,7 +7,8 @@ export type PrFile = {
 export type ReviewInput = {
     repoFullName: string;
     title: string;
-    diff: string;
+    contextSnippets: string[];          // Chunks retrieved from the PR's Pinecone namespace 
+    repoContextSnippets: string[];     // Optional chunks from repo-sync namespace (full codebase context) 
 };
 
 export type CodeChunk = {

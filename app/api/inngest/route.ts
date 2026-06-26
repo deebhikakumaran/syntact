@@ -1,6 +1,6 @@
 import { serve } from "inngest/next";
 import { inngest } from "@/features/inngest/client";
-import { reviewPullRequest } from "@/features/reviews/server/review-pr";
+import { reviewPullRequest } from "@/features/reviews/server/review-pr-func";
 import { syncRepoCodebaseFunction } from "@/features/repo-sync/server/repo-sync-function";
 
 export const { GET, POST, PUT } = serve({
