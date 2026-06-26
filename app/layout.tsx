@@ -19,7 +19,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "syntact",
+  title: "codefox",
   description: "ai-powered code review platform.",
 };
 

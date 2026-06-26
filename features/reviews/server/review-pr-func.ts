@@ -1,6 +1,7 @@
 import { inngest } from "@/features/inngest/client";
 import { db } from "@/lib/db";
-import { getPullRequestDiffs, formatPrDiffsForReview } from "@/features/reviews/server/pr-diff";
+import { getPineconeIndex } from "@/features/pinecone/client";
+import { getPullRequestDiffs } from "@/features/reviews/server/pr-diff";
 import { generateReview } from "@/features/reviews/server/generate-review";
 import { postPrComment } from "@/features/reviews/server/post-pr-comment";
 import { chunkPrFiles } from "@/features/reviews/utils/chunk-code";
@@ -55,8 +56,21 @@ export const reviewPullRequest = inngest.createFunction(
             await saveChunksToPinecone(namespace, chunks);
         });
   
-        // Pinecone needs a short delay before new vectors appear in search results
-        await step.sleep("wait-for-vectors-to-index", "10s");
+        await step.run("verify-vectors-indexed", async () => {
+            const index = getPineconeIndex();
+            for (let i = 0; i < 3; i++) {
+                const result = await index.namespace(namespace).searchRecords({
+                    query: { topK: 1, inputs: { text: pullRequest.title } },
+                });
+                if (result.result.hits.length > 0) return;
+                await new Promise(r => setTimeout(r, 3000));
+            }
+        });
+
+        const searchQuery = [
+            pullRequest.title,
+            ...chunks.slice(0, 5).map(c => c.filePath),  
+        ].join(" ");
 
         // Extra context from the on-demand codebase sync, when the repo was synced
         const repoContextSnippets = await step.run("search-repo-context", async () => {
@@ -69,14 +83,14 @@ export const reviewPullRequest = inngest.createFunction(
             }
     
             const repoNamespace = buildRepoNamespace(pullRequest.repoFullName);
-            return searchPrContext(repoNamespace, pullRequest.title);
+            return searchPrContext(repoNamespace, searchQuery);
         });
 
         const review = await step.run("generate-ai-review", async () => {
             // Search within this PR's namespace for chunks related to the PR title
             const contextSnippets = await searchPrContext(
                 namespace,
-                pullRequest.title
+                searchQuery
             );
     
             return generateReview({
@@ -105,6 +119,11 @@ export const reviewPullRequest = inngest.createFunction(
                     reviewedAt: new Date(),
                 },
             });
+        });
+
+        await step.run("cleanup-pr-namespace", async () => {
+            const index = getPineconeIndex();
+            await index.deleteNamespace(namespace);
         });
 
         return { pullRequestId, status: "reviewed" };

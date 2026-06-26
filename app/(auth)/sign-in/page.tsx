@@ -4,7 +4,7 @@ import { requireUnauth } from "@/features/auth/actions";
 
 export const metadata: Metadata = {
     title: "Sign In",
-    description: "Sign In to Syntact with your Github Account.",
+    description: "Sign In to Codefox with your Github Account.",
 };
 
 type SignInProps = {

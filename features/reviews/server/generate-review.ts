@@ -2,9 +2,7 @@ import { generateText } from "ai";
 import { openrouter } from "@/features/ai"
 import { ReviewInput } from "@/features/reviews/types/review";
 
-
-const REVIEW_MODEL = "openrouter/free"
-
+const REVIEW_MODEL = process.env.REVIEW_MODEL ?? "google/gemini-flash-1.5";
 
 const SYSTEM_PROMPT = `
 You are an expert Senior Software Engineer and Automated Code Reviewer. Your task is to analyze the provided code diff or source file and provide a meticulous, constructive, and actionable code review. 

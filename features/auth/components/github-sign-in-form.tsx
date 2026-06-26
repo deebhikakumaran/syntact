@@ -59,9 +59,9 @@ export function GithubLoginForm({
               {/* add logo later */}
               <GalleryVerticalEndIcon className="size-6" />
             </div>
-            <span className="sr-only">Syntact</span>
+            <span className="sr-only">Codefox</span>
           </a>
-          <h1 className="text-xl font-bold">Welcome to Syntact</h1>
+          <h1 className="text-xl font-bold">Welcome to Codefox</h1>
           <FieldDescription>
             Sign in to analyze and review your repositories.
           </FieldDescription>

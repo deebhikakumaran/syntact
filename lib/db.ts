@@ -1,11 +1,11 @@
 import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "@/lib/generated/prisma/client";
 
-// check database url format and validate it
 const validateDbUrl = () => {
-    // postgresql://***:***/neondb?sslmode=require&channel_binding=require
-
-}
+    if (!process.env.DATABASE_URL) {
+        throw new Error("Missing DATABASE_URL environment variable");
+    }
+};
 
 const createPrismaClient = () => {
     validateDbUrl();

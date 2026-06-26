@@ -168,7 +168,7 @@ export function GithubConnectCard({
                                 <GithubIcon className="size-5" />
                             </span>
                             <div>
-                                <CardTitle>SYNTACT</CardTitle>
+                                <CardTitle>CODEFOX</CardTitle>
                                 <CardDescription>
                                     Install account or organization to access public and private repositories.
                                 </CardDescription>

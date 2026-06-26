@@ -2,7 +2,6 @@ import { getServerSession } from "@/features/auth/actions";
 import { getUserInstallationId } from "@/features/github/server/installation";
 import { getInstallationReposPage } from "@/features/github/server/repos";
 import { getRepoSyncStatuses } from "@/features/repo-sync/server";
-import { dataTagErrorSymbol } from "@tanstack/react-query";
 import { NextResponse } from "next/server";
 
 export async function GET(request: Request) {
